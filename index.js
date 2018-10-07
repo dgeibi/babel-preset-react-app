@@ -3,8 +3,8 @@
 const path = require("path");
 const d = (v, d) => (v != null ? v : d);
 
-module.exports = function preset(context, opts = {}) {
-  const env = process.env.BABEL_ENV || process.env.NODE_ENV;
+module.exports = function preset(api, opts = {}) {
+  const env = api.env();
   const isEnvProduction = env === "production";
   const isEnvTest = env === "test";
 
@@ -28,6 +28,7 @@ module.exports = function preset(context, opts = {}) {
           debug: opts.debug,
           useBuiltIns: false,
           modules: d(opts.modules, isEnvTest ? "commonjs" : false),
+          exclude: d(opts.exclude, ["transform-typeof-symbol"]),
           ignoreBrowserslistConfig: true,
           targets: d(
             opts.targets,
